@@ -1,0 +1,330 @@
+define irleft 10 
+#define irright A7 
+#define ltrig 12
+#define lecho 11 
+#define rtrig A0 
+#define recho A1 
+#define mtrig 2
+#define mecho 4
+#define in1 8
+#define in2 6
+#define in3 9
+#define in4 7
+#define enA 5
+#define enB 3 
+#define out5 A6 
+#define out4 A5 
+#define out3 A4 
+#define out2 A3 
+#define out1 A2
+int ir1,ir2,ir3,ir4,ir5; // Variable to store data from IR sensors
+int black=0; 
+int white=1;
+int line=white;
+// Black line means Ouput of sensor = 0
+// White line means Ouput of sensor = 1
+// Which Line you want to Follow
+int SPEED=140; // Set Speed B/W 0-255
+void linefollowing();
+void ir(); 
+void left();
+void forward_left(); 
+void backward_left(); 
+void right();
+void forward_right(); 
+void backward_right(); 
+void forward();
+void backward();
+void Stop();
+void setup() { 
+pinMode(out1,INPUT); 
+pinMode(out2,INPUT); 
+pinMode(out3,INPUT); 
+pinMode(out4,INPUT);
+pinMode(out5,INPUT);
+// Ouput from IR sensor
+// Ouput from IR sensor
+// Ouput from IR sensor
+// Ouput from IR sensor
+// Ouput from IR sensor
+pinMode(in1, OUTPUT); // CounterClockwise Motor A
+pinMode(in2, OUTPUT); // Clockwise Motor A 
+pinMode(in3, OUTPUT); // CounterClockwise Motor B 
+pinMode(in4, OUTPUT); // Clockwise Motor B
+pinMode(enA, OUTPUT); // Enable Ouputs for Motor A (PWM) 
+pinMode(enB, OUTPUT); // Enable Ouputs for Motor B (PWM) 
+Serial.begin(9600); // initialize serial monitor 
+analogWrite(enA,SPEED);
+analogWrite(enB,SPEED); 
+delay(10);
+}
+void loop() {
+ir(); 
+linefollowing();
+}
+void linefollowing(){
+if (ir1!=line && ir2!=line && ir3!=line && ir4!=line && ir5!=line ){
+//00000
+Stop();
+}
+else if (ir1!=line && ir2!=line && ir3!=line && ir4!=line && ir5==line ){
+//00001
+forward_right(); 
+while(ir3!=line){ 
+ir();
+}
+}
+else if (ir1!=line && ir2!=line && ir3!=line && ir4==line && ir5!=line ){
+//00010
+forward_right();
+}
+else if (ir1!=line && ir2!=line && ir3!=line && ir4==line && ir5==line ){
+//00011
+forward_right(); 
+while(ir3!=line){ 
+ir();
+}
+}
+else if (ir1!=line && ir2!=line && ir3==line && ir4!=line && ir5!=line ){
+//00100
+forward();
+}
+else if (ir1!=line && ir2!=line && ir3==line && ir4!=line && ir5==line ){
+//00101
+forward();
+}
+else if (ir1!=line && ir2!=line && ir3==line && ir4==line && ir5==line ){
+//00111
+forward_right();
+}
+else if (ir1!=line && ir2==line && ir3!=line && ir4!=line && ir5!=line ){
+//01000
+forward_left(); 
+while(ir3!=line){ 
+ir();
+}
+}
+else if (ir1!=line && ir2==line && ir3!=line && ir4!=line && ir5==line ){
+//01001
+forward_left(); 
+while(ir3!=line){
+ir();
+}
+}
+else if (ir1!=line && ir2==line && ir3!=line && ir4==line && ir5!=line ){
+//01010
+forward();
+}
+else if (ir1!=line && ir2==line && ir3!=line && ir4==line && ir5==line ){
+//01011
+forward_right(); 
+while(ir3!=line){ 
+ir();
+}
+}
+else if (ir1!=line && ir2==line && ir3==line && ir4!=line && ir5!=line ){
+//01100
+forward_left();
+}
+else if (ir1!=line && ir2==line && ir3==line && ir4!=line && ir5==line ){
+//01101
+forward_left();
+}
+else if (ir1!=line && ir2==line && ir3==line && ir4==line && ir5!=line ){
+//01110
+forward();
+}
+else if (ir1!=line && ir2==line && ir3==line && ir4==line && ir5==line ){
+//01111
+forward_right();
+}
+else if (ir1==line && ir2!=line && ir3!=line && ir4!=line && ir5!=line ){
+//10000
+forward_left(); 
+while(ir3!=line){ 
+ir();
+}
+}
+else if (ir1==line && ir2!=line && ir3!=line && ir4!=line && ir5==line ){
+//10001
+forward_right(); 
+while(ir3!=line){ 
+ir();
+}
+// prefer right
+}
+else if (ir1==line && ir2!=line && ir3!=line && ir4==line && ir5!=line ){
+//10010
+forward_left(); 
+while(ir3!=line){ 
+ir();
+}
+}
+else if (ir1==line && ir2!=line && ir3!=line && ir4==line && ir5==line ){
+//10011
+forward_right(); 
+while(ir3!=line){ 
+ir();
+}
+}
+else if (ir1==line && ir2!=line && ir3==line && ir4!=line && ir5!=line ){
+//10100
+forward();
+}
+else if (ir1==line && ir2!=line && ir3==line && ir4!=line && ir5==line ){
+//10101
+forward();
+}
+else if (ir1==line && ir2!=line && ir3==line && ir4==line && ir5!=line ){
+//10110
+forward_right();
+}
+else if (ir1==line && ir2!=line && ir3==line && ir4==line && ir5==line ){
+//10111
+forward_right();
+}
+else if (ir1==line && ir2==line && ir3!=line && ir4!=line && ir5!=line ){
+//11000
+forward_left(); 
+while(ir3!=line){ 
+ir();
+}
+}
+else if (ir1==line && ir2==line && ir3!=line && ir4!=line && ir5==line ){
+//11001
+forward_left(); 
+while(ir3!=line){ 
+ir();
+}
+}
+else if (ir1==line && ir2==line && ir3!=line && ir4==line && ir5!=line ){
+//11010
+forward_left();
+while(ir3!=line){ 
+ir();
+}
+}
+else if (ir1==line && ir2==line && ir3!=line && ir4==line && ir5==line ){
+//11011
+forward();
+}
+else if (ir1==line && ir2==line && ir3==line && ir4!=line && ir5!=line ){
+//11100
+forward_left();
+}
+else if (ir1==line && ir2==line && ir3==line && ir4!=line && ir5==line ){
+//11101
+forward_left();
+}
+else if (ir1==line && ir2==line && ir3==line && ir4==line && ir5!=line ){
+//11110
+forward_left();
+}
+else if (ir1==line && ir2==line && ir3==line && ir4==line && ir5==line ){
+//11111
+Stop();
+}
+}
+void ir(){
+ir1=analogRead(out1); //most left 
+ir2=analogRead(out2); //most mid left 
+ir3=analogRead(out3); //most mid 
+ir4=analogRead(out4); //most mid right
+ir5=analogRead(out5); //most right
+if(ir1>200) 
+ir1=1;
+else
+ir1=0; 
+if(ir2>200) 
+ir2=1;
+else
+ir2=0; 
+if(ir3>200) 
+ir3=1;
+else
+ir3=0; 
+if(ir4>200) 
+ir4=1;
+else
+ir4=0; 
+if(ir5>200) 
+ir5=1;
+else
+ir5=0;
+// Print IR sensor values of Serial Monitor :-
+Serial.print("IR 1 = ");
+Serial.print(ir1); 
+Serial.print(" | IR 2 = "); 
+Serial.print(ir2); 
+Serial.print(" | IR 3 = "); 
+Serial.print(ir3);
+Serial.print(" | IR 4 = "); 
+Serial.print(ir4); 
+Serial.print(" | IR 5 = "); 
+Serial.println(ir5);
+}
+void forward()
+{
+digitalWrite(in1, HIGH); 
+digitalWrite(in3, HIGH); 
+digitalWrite(in2, LOW); 
+digitalWrite(in4, LOW);
+}
+void backward()
+{
+digitalWrite(in2, HIGH); 
+digitalWrite(in4, HIGH); 
+digitalWrite(in1, LOW); 
+digitalWrite(in3, LOW);
+}
+void left()
+{
+digitalWrite(in1, HIGH); 
+digitalWrite(in4, HIGH); 
+digitalWrite(in2, LOW); 
+digitalWrite(in3, LOW);
+}
+void forward_left()
+{
+digitalWrite(in1, HIGH); 
+digitalWrite(in4, LOW); 
+digitalWrite(in2, LOW); 
+digitalWrite(in3, LOW);
+}
+void backward_left()
+{
+digitalWrite(in1, LOW); 
+digitalWrite(in2, HIGH); 
+digitalWrite(in3, LOW); 
+digitalWrite(in4, LOW);
+}
+void right()
+{
+digitalWrite(in2, HIGH); 
+digitalWrite(in3, HIGH); 
+digitalWrite(in1, LOW); 
+digitalWrite(in4, LOW);
+}
+void forward_right()
+{
+digitalWrite(in1, LOW); 
+digitalWrite(in2, LOW); 
+digitalWrite(in3, HIGH); 
+digitalWrite(in4, LOW);
+}
+void backward_right()
+{
+5.2 Simulation PCB and 3D view
+PCB design
+digitalWrite(in1, LOW); 
+digitalWrite(in2, LOW); 
+digitalWrite(in3, LOW); 
+digitalWrite(in4, HIGH);
+}
+void Stop()
+{
+digitalWrite(in1, LOW); 
+digitalWrite(in2, LOW); 
+digitalWrite(in3, LOW); 
+digitalWrite(in4, LOW);
+}
